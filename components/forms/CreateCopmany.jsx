@@ -32,13 +32,14 @@ const CreateCompany = ({ token }) => {
       company_bin,
       company_tin,
     };
-    const apiCompany = BASE_URL + "api/v1/companies/create";
+    const apiCompany = BASE_URL + "company";
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    console.log(company);
+  
     axios.post(apiCompany, company, config).then((response) => {
-      if (response.data.status) {
+      // console.log(response.status);
+      if (response.status==201) {
         alert("Company Information Created!");
         Router.push({
           pathname: "/",

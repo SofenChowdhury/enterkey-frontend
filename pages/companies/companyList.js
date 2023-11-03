@@ -23,16 +23,16 @@ const companyList = ({ token }) => {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    const apiCompanies = BASE_URL + "api/v1/companies";
+    const apiCompanies = BASE_URL + "companies";
 
     axios
       .get(apiCompanies, {
         headers: { Authorization: "Bearer " + token },
       })
       .then((res) => {
-        if (res.data.status == true) {
+        if (res.status == 200) {
           setLoader(false);
-          setCompanies(res.data.data);
+          setCompanies(res.data);
         }
       })
       .catch((error) => {
@@ -82,15 +82,15 @@ const companyList = ({ token }) => {
                 {companies.map((company, index) => (
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
-                    <td className="text-center">{company.id}</td>
-                    <td>{company.name}</td>
+                    <td className="text-center">{company.comp_id}</td>
+                    <td>{company.company_name}</td>
                     <td>{company.company_bin}</td>
                     <td>{company.contact_person}</td>
                     <td>{company.contact_email}</td>
                     <td>{company.contact_number}</td>
                     <td>{company.contact_address}</td>
                     <td>
-                      <Link href={`/companies/updateCompany/${company.id}`}>
+                      <Link href={`/companies/updateCompany/${company.comp_id}`}>
                         <button className="btn btn-light btn-sm me-1">
                           <EditIcon cursor="pointer" />
                         </button>
