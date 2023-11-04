@@ -14,6 +14,7 @@ import { BASE_URL } from "../../base";
 
 // Icon import
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const companyList = ({ token }) => {
   const theme = useTheme();
@@ -39,7 +40,21 @@ const companyList = ({ token }) => {
         console.log(error);
       });
   }, []);
-
+  const handleDeleteCompany = (companyId) => {
+    const apiUrl = BASE_URL + `company/delete/${companyId}`;
+    axios
+      .post(apiUrl, {
+        headers: { Authorization: "Bearer " + token },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setCompanies(companies.filter((company) => company.comp_id !== companyId));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <>
       {loader ? (
@@ -95,6 +110,12 @@ const companyList = ({ token }) => {
                           <EditIcon cursor="pointer" />
                         </button>
                       </Link>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDeleteCompany(company.comp_id)}
+                       >
+                          <DeleteIcon cursor="pointer" />
+                      </button>
                     </td>
                   </tr>
                 ))}
