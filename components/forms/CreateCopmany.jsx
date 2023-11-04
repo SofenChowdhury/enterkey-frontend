@@ -12,7 +12,7 @@ import axios from "axios";
 import { BASE_URL } from "../../base";
 
 const CreateCompany = ({ token }) => {
-  const [name, setCompanyName] = useState("");
+  const [company_name, setCompanyName] = useState("");
   const [contact_email, setContactEmail] = useState("");
   const [contact_address, setContactAddress] = useState("");
   const [contact_number, setContactNumber] = useState("");
@@ -24,7 +24,7 @@ const CreateCompany = ({ token }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     const company = {
-      name,
+      company_name,
       contact_address,
       contact_number,
       contact_person,
@@ -32,7 +32,7 @@ const CreateCompany = ({ token }) => {
       company_bin,
       company_tin,
     };
-    const apiCompany = BASE_URL + "company";
+    const apiCompany = BASE_URL + "company/create";
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };

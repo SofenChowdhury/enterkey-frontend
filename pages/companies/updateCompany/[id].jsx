@@ -18,7 +18,7 @@ const UpdateCompany = ({ query, token }) => {
   const colors = tokens(theme.palette.mode);
 
   // DATA FOR POST
-  const [name, setCompanyName] = useState("");
+  const [company_name, setCompanyName] = useState("");
   const [contact_email, setContactEmail] = useState("");
   const [contact_address, setContactAddress] = useState("");
   const [contact_number, setContactNumber] = useState("");
@@ -32,15 +32,16 @@ const UpdateCompany = ({ query, token }) => {
 
   // Fetch Company Details
   useEffect(() => {
-    const apiUrl = BASE_URL + "api/v1/companies/" + id;
+    const apiUrl = BASE_URL + "company/" + id;
     axios
       .get(apiUrl, {
         headers: { Authorization: "Bearer " + token },
       })
       .then((res) => {
-        if (res.data.status == true) {
+        console.log(res);
+        if (res.status == 200) {
           setLoader(false);
-          setCompanyName(res.data.data.name);
+          setCompanyName(res.data.data.company_name);
           setContactEmail(res.data.data.contact_email);
           setContactAddress(res.data.data.contact_address);
           setContactNumber(res.data.data.contact_number);
@@ -59,9 +60,9 @@ const UpdateCompany = ({ query, token }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const apiCompany = BASE_URL + "api/v1/companies/update";
+    const apiCompany = BASE_URL + "company/update/"+id;
     const companyData = {
-      name,
+      company_name,
       contact_address,
       contact_number,
       contact_person,
@@ -118,7 +119,7 @@ const UpdateCompany = ({ query, token }) => {
                   size="small"
                   type="text"
                   fullWidth
-                  value={name}
+                  value={company_name}
                   onChange={(e) => setCompanyName(e.target.value)}
                   className="shadow-input"
                 />
