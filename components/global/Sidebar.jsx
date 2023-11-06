@@ -884,7 +884,7 @@ const Sidebar = ({ name, roles, company, isCollapsed }) => {
               </SubMenu>
 
               {/* Branches */}
-              {/* <SubMenu
+              <SubMenu
                 title="Manage Branch"
                 icon={<AccountTreeIcon />}
                 style={{
@@ -913,7 +913,7 @@ const Sidebar = ({ name, roles, company, isCollapsed }) => {
                   change={change}
                   width={width}
                 />
-              </SubMenu> */}
+              </SubMenu>
 
               {/* HS Codes */}
               {/* <SubMenu
