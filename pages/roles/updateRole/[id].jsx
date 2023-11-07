@@ -36,12 +36,15 @@ const UpdateRole = ({ token, query }) => {
   // FETCH ROLE DETAILS
   useEffect(() => {
     const apiUrl = "http://52.66.207.126/api/v1/roles/" + id;
+    // const apiUrl = BASE_URL + "role/edit/"+id;
+        // const apiUrl = BASE_URL + `role/edit/${id}`;
     axios
       .get(apiUrl, {
         headers: { Authorization: "Bearer " + token },
       })
       .then((res) => {
-        if (res.data.status == true) {
+        console.log(res);
+        if (res.status == 200) {
           setRoleDetails(res.data.data);
 
           setName(res.data.data.name);

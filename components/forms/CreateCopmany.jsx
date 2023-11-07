@@ -38,7 +38,7 @@ const CreateCompany = ({ token }) => {
     };
   
     axios.post(apiCompany, company, config).then((response) => {
-      // console.log(response.status);
+      console.log(response);
       if (response.status==201) {
         alert("Company Information Created!");
         Router.push({

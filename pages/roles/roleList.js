@@ -22,16 +22,17 @@ const roleList = ({ token }) => {
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
-    const apiRoles = BASE_URL + "api/v1/roles";
+    const apiRoles = BASE_URL + "role";
 
     axios
       .get(apiRoles, {
         headers: { Authorization: "Bearer " + token },
       })
       .then((res) => {
-        console.log(res.data);
-        if (res.data.status == true) {
+    
+        if (res.status == 200) {
           setRoles(res.data.data);
+              // console.log(res);
         }
       })
       .catch((error) => {
@@ -56,9 +57,9 @@ const roleList = ({ token }) => {
           {roles.map((role, index) => (
             <tr key={index}>
               <th scope="row">{index + 1}</th>
-              <td>{role.name}</td>
+              <td>{role.role_name}</td>
               <td>
-                <Link href={`/roles/updateRole/${role.id}`}>
+                <Link href={`/roles/updateRole/${role.role_id}`}>
                   <Button>
                     <EditIcon cursor="pointer" />
                   </Button>
