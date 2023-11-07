@@ -16,9 +16,10 @@ const updateBranch = ({ token, query }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [name, setBranchName] = useState("");
-  const [code, setBranchCode] = useState("");
-  const [contact_address, setContactAddress] = useState("");
+  const [branches, setBranch] = useState("");
+  const [branch_name, setBranchName] = useState("");
+  const [bran_id, setBran_id] = useState("");
+  const [company_id, setCompany_id] = useState("");
   const [order_prefix, setOrderPrefix] = useState("");
   const [contact_person, setContactPerson] = useState("");
   const [contact_email, setPersonEmail] = useState("");
@@ -29,22 +30,69 @@ const updateBranch = ({ token, query }) => {
 
   //fetching branch details
   // Fetch Company Details
+  // useEffect(() => {
+  //   const apiUrl = BASE_URL + "api/v1/branches/" + id;
+  //   axios
+  //     .get(apiUrl, {
+  //       headers: { Authorization: "Bearer " + token },
+  //     })
+  //     .then((res) => {
+  //       if (res.data.status == true) {
+  //         setLoader(false);
+  //         setBranchName(res.data.data.name);
+  //         setBranchCode(res.data.data.code);
+  //         setOrderPrefix(res.data.data.order_prefix);
+  //         setContactPerson(res.data.data.person);
+  //         setPersonEmail(res.data.data.email);
+  //         setContactPhone(res.data.data.phone);
+  //         setContactAddress(res.data.data.address);
+  //       } else {
+  //         setFormErrors(res.data.message);
+  //         console.log(res.data);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [id]);
+
   useEffect(() => {
-    const apiUrl = BASE_URL + "api/v1/branches/" + id;
+    const apiUrl = BASE_URL + "branches";
     axios
       .get(apiUrl, {
         headers: { Authorization: "Bearer " + token },
       })
       .then((res) => {
-        if (res.data.status == true) {
-          setLoader(false);
-          setBranchName(res.data.data.name);
-          setBranchCode(res.data.data.code);
-          setOrderPrefix(res.data.data.order_prefix);
-          setContactPerson(res.data.data.person);
-          setPersonEmail(res.data.data.email);
-          setContactPhone(res.data.data.phone);
-          setContactAddress(res.data.data.address);
+        if (res.data) {
+          console.log(res.data.bran_id);
+          res.data.map((branch)=> {
+            if(branch.bran_id == id){
+              console.log("branch.bran_id");
+              console.log(branch.bran_id);
+              console.log(id);
+              setLoader(false);
+              setBranchName(branch.branch_name);
+              setBran_id(branch.bran_id);
+              setCompany_id(branch.company_id);
+            }
+          })
+        
+          // for (let index = 0; index < res.data.length; index++) {
+          //   if (res.data[index].bran_id == id) {
+          //     console.log("res.data.bran_id");
+          //     console.log(res.data[index].bran_id);
+          //   }
+            
+          // }
+          // setBranch(res.data)
+          // setLoader(false);
+          // setBranchName(res.data.data.name);
+          // setBran_id(res.data.data.bran_id);
+          // setCompany_id(res.data.data.company_id);
+          // setContactPerson(res.data.data.person);
+          // setPersonEmail(res.data.data.email);
+          // setContactPhone(res.data.data.phone);
+          // setContactAddress(res.data.data.address);
         } else {
           setFormErrors(res.data.message);
           console.log(res.data);
@@ -57,17 +105,10 @@ const updateBranch = ({ token, query }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const apiBranch = BASE_URL + "api/v1/branches/update";
+    const apiBranch = BASE_URL + "branch/update/" + id;
     const branch = {
-      name,
-      code,
-      contact_address,
-      order_prefix,
-      contact_person,
-      contact_email,
-      contact_mobile,
-      formErrors,
-      id,
+      branch_name,
+      company_id,
     };
 
     const config = {
@@ -76,7 +117,7 @@ const updateBranch = ({ token, query }) => {
     console.log(branch);
     axios.post(apiBranch, branch, config).then((response) => {
       console.log(response.data);
-      if (response.data.status) {
+      if (response.data) {
         alert("Branch Updated!");
         Router.push({
           pathname: "/branch/branchList",
@@ -112,32 +153,33 @@ const updateBranch = ({ token, query }) => {
           </Link>
         </div>
       </div>
+
       <div className="row">
-        <div className="col-md-4 mt-4">
+        <div className="col-md-6 mt-4">
           <TextField
             label="Branch Name"
             variant="outlined"
             size="small"
             type="text"
-            value={name}
+            value={branch_name}
             fullWidth
             onChange={(e) => setBranchName(e.target.value)}
             className="shadow-input"
           />
         </div>
-        <div className="col-md-4 mt-4">
+        <div className="col-md-6 mt-4">
           <TextField
-            label="Branch Code"
+            label="Company Id"
             variant="outlined"
             size="small"
-            type="email"
-            value={code}
+            type="number"
+            value={company_id}
             fullWidth
-            onChange={(e) => setBranchCode(e.target.value)}
+            onChange={(e) => setCompany_id(e.target.value)}
             className="shadow-input"
           />
         </div>
-        <div className="col-md-4 mt-4">
+        {/* <div className="col-md-4 mt-4">
           <TextField
             label="Order Prefix"
             variant="outlined"
@@ -148,10 +190,10 @@ const updateBranch = ({ token, query }) => {
             onChange={(e) => setOrderPrefix(e.target.value)}
             className="shadow-input"
           />
-        </div>
+        </div> */}
       </div>
 
-      <div className="row">
+      {/* <div className="row">
         <div className="col-md-4 mt-4">
           <TextField
             label="Contact Person"
@@ -188,8 +230,8 @@ const updateBranch = ({ token, query }) => {
             className="shadow-input"
           />
         </div>
-      </div>
-      <div className="row">
+      </div> */}
+      {/* <div className="row">
         <div className="col-md-12 mt-4">
           <TextField
             label="Address"
@@ -205,7 +247,7 @@ const updateBranch = ({ token, query }) => {
             className="shadow-input"
           />
         </div>
-      </div>
+      </div> */}
       <div className="row mt-4">
         <div className="col-md-12">
           <Button

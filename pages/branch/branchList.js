@@ -39,27 +39,51 @@ const branchList = ({ token }) => {
   const [lastPage, setLastPage] = useState(1);
   const [totalData, setTotalData] = useState(0);
 
+  // useEffect(() => {
+  //   const apiBranch =
+  //     BASE_URL +
+  //     "api/v1/branch-list?page=" +
+  //     page +
+  //     "&name=" +
+  //     name +
+  //     "&code=" +
+  //     code;
+
+  //   axios
+  //     .get(apiBranch, {
+  //       headers: { Authorization: "Bearer " + token },
+  //     })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       if (res.data.status) {
+  //         setLoader(false);
+  //         setBranches(res.data.data.data);
+  //         setLastPage(res.data.data.last_page);
+  //         setTotalData(res.data.data.total);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [page, name, code]);
+
   useEffect(() => {
     const apiBranch =
       BASE_URL +
-      "api/v1/branch-list?page=" +
-      page +
-      "&name=" +
-      name +
-      "&code=" +
-      code;
+      "branches";
 
     axios
       .get(apiBranch, {
         headers: { Authorization: "Bearer " + token },
       })
       .then((res) => {
+        console.log("res.data");
         console.log(res.data);
-        if (res.data.status) {
+        if (res.data) {
           setLoader(false);
-          setBranches(res.data.data.data);
-          setLastPage(res.data.data.last_page);
-          setTotalData(res.data.data.total);
+          setBranches(res.data);
+          // setLastPage(res.data.data.last_page);
+          // setTotalData(res.data.data.total);
         }
       })
       .catch((error) => {
@@ -127,12 +151,9 @@ const branchList = ({ token }) => {
               <thead>
                 <tr className="table-success">
                   <th scope="col">#</th>
-                  <th scope="col">Branch ID</th>
+                  <th scope="col">Company ID</th>
+                  {/* <th scope="col">Branch ID</th> */}
                   <th scope="col">Branch Name</th>
-                  <th scope="col">Branch Code</th>
-                  <th scope="col">Contact Person</th>
-                  <th scope="col">Contact Address</th>
-                  <th scope="col">Contact Email</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -140,14 +161,11 @@ const branchList = ({ token }) => {
                 {branches?.map((branch, index) => (
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
-                    <td className="text-center">{branch.id}</td>
-                    <td>{branch.name}</td>
-                    <td>{branch.code}</td>
-                    <td>{branch.person}</td>
-                    <td>{branch.address}</td>
-                    <td>{branch.email}</td>
+                    <td>{branch.company_id}</td>
+                    {/* <td>{branch.bran_id}</td> */}
+                    <td>{branch.branch_name}</td>
                     <td>
-                      <Link href={`/branch/updateBranch/${branch.id}`}>
+                      <Link href={`/branch/updateBranch/${branch.bran_id}`}>
                         <button className="btn btn-light btn-sm me-1">
                           <EditIcon cursor="pointer" />
                         </button>
