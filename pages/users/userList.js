@@ -22,6 +22,7 @@ const userList = ({ token }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    
     const apiUsers = BASE_URL + "api/v1/admin-list";
 
     axios
